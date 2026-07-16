@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GIT NLCM - คู่มือ Git & GitHub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <title>GIT NLCM - Version Control Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,26 +13,25 @@
         }
 
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --secondary: #ec4899;
-            --dark: #0f172a;
-            --darker: #020617;
-            --light: #f8fafc;
-            --gray: #64748b;
-            --code-bg: #1e293b;
-        }
-
-        html {
-            scroll-behavior: smooth;
+            --primary: #f093fb;
+            --secondary: #f5576c;
+            --dark: #0f0f23;
+            --darker: #0a0a1a;
+            --light: #ffffff;
+            --gray: #b8b8b8;
+            --code-bg: #1e1e3f;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --git-color: #f05032;
+            --github-color: #181717;
         }
 
         body {
             font-family: 'Kanit', sans-serif;
-            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 50%, #1e1b4b 100%);
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
             color: var(--light);
-            min-height: 100vh;
+            line-height: 1.6;
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
         /* Navbar */
@@ -41,57 +40,75 @@
             top: 0;
             left: 0;
             right: 0;
-            background: rgba(15, 23, 42, 0.95);
+            background: rgba(15, 15, 35, 0.95);
             backdrop-filter: blur(10px);
             padding: 1rem 2rem;
             z-index: 1000;
-            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
-            animation: slideDown 0.5s ease-out;
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .logo {
-            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: glow 2s ease-in-out infinite alternate;
         }
 
-        .nav-menu {
+        .logo svg {
+            width: 40px;
+            height: 40px;
+            filter: drop-shadow(0 0 10px rgba(240, 147, 251, 0.5));
+        }
+
+        .nav-links {
             display: flex;
-            gap: 0.5rem;
+            gap: 2rem;
             list-style: none;
-            flex-wrap: wrap;
         }
 
-        .nav-menu li a {
+        .nav-links a {
             color: var(--light);
             text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
+            font-weight: 500;
             transition: all 0.3s ease;
-            font-size: 0.9rem;
-            display: block;
+            position: relative;
+            padding: 0.5rem 0;
         }
 
-        .nav-menu li a:hover {
-            background: var(--primary);
-            transform: translateY(-2px);
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
         }
 
-        .nav-menu li a.active {
-            background: var(--primary);
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
         /* Hero Section */
@@ -106,91 +123,73 @@
             overflow: hidden;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: pulse 3s ease-in-out infinite;
-        }
-
         .hero-content {
-            position: relative;
-            z-index: 1;
             max-width: 900px;
+            z-index: 2;
         }
 
         .hero h1 {
-            font-size: 4rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, var(--secondary) 100%);
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: fadeInUp 1s ease-out;
+            animation: fadeInUp 1s ease;
         }
 
-        .hero .subtitle {
-            font-size: 1.5rem;
-            color: var(--gray);
+        .hero p {
+            font-size: 1.3rem;
             margin-bottom: 2rem;
-            animation: fadeInUp 1s ease-out 0.2s both;
+            color: var(--gray);
+            animation: fadeInUp 1s ease 0.2s both;
         }
 
-        .hero .welcome-text {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: #cbd5e1;
-            margin-bottom: 3rem;
-            animation: fadeInUp 1s ease-out 0.4s both;
-        }
-
-        .hero-buttons {
+        .hero-icons {
             display: flex;
-            gap: 1rem;
             justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 1s ease-out 0.6s both;
+            gap: 3rem;
+            margin: 3rem 0;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .hero-icon {
+            width: 100px;
+            height: 100px;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-icon:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .hero-icon svg {
+            width: 100%;
+            height: 100%;
         }
 
         .btn {
-            padding: 1rem 2rem;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
             display: inline-block;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 30px rgba(99, 102, 241, 0.6);
-        }
-
-        .btn-secondary {
-            background: transparent;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
             color: var(--light);
-            border: 2px solid var(--primary);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            animation: fadeInUp 1s ease 0.6s both;
         }
 
-        .btn-secondary:hover {
-            background: var(--primary);
+        .btn:hover {
             transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(240, 147, 251, 0.4);
         }
 
-        /* Sections */
-        section {
+        /* Content Sections */
+        .section {
             padding: 5rem 2rem;
             max-width: 1200px;
             margin: 0 auto;
@@ -198,195 +197,162 @@
 
         .section-title {
             font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 2rem;
-            color: var(--primary);
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             position: relative;
-            display: inline-block;
         }
 
         .section-title::after {
             content: '';
             position: absolute;
             bottom: -10px;
-            left: 0;
-            width: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
             height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
             border-radius: 2px;
         }
 
-        .content-card {
-            background: rgba(30, 41, 59, 0.5);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            border-radius: 16px;
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
             padding: 2rem;
             margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
-            animation: fadeIn 0.5s ease-out;
+            animation: fadeIn 0.8s ease;
         }
 
-        .content-card:hover {
-            border-color: var(--primary);
-            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.2);
+        .card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(240, 147, 251, 0.3);
         }
 
-        .content-card h3 {
+        .card h3 {
             font-size: 1.5rem;
             margin-bottom: 1rem;
-            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
 
-        .content-card p, .content-card ul {
-            line-height: 1.8;
-            color: #cbd5e1;
-            margin-bottom: 1rem;
+        .card h3 svg {
+            width: 28px;
+            height: 28px;
         }
 
-        .content-card ul {
+        .card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .card ul li {
+            padding: 0.5rem 0;
             padding-left: 1.5rem;
-        }
-
-        .content-card li {
-            margin-bottom: 0.5rem;
-        }
-
-        /* Code Blocks */
-        pre {
-            background: var(--code-bg);
-            border-radius: 12px;
-            padding: 1.5rem;
-            overflow-x: auto;
-            margin: 1rem 0;
-            border: 1px solid rgba(99, 102, 241, 0.3);
             position: relative;
         }
 
-        pre::before {
-            content: 'BASH';
+        .card ul li::before {
+            content: '▸';
             position: absolute;
-            top: 0.5rem;
-            right: 1rem;
-            font-size: 0.75rem;
-            color: var(--gray);
+            left: 0;
+            color: var(--primary);
+        }
+
+        /* Code Blocks */
+        .code-container {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        .code-block {
+            background: var(--code-bg);
+            padding: 1.5rem;
+            border-radius: 10px;
+            overflow-x: auto;
             font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
         }
 
-        code {
-            font-family: 'Fira Code', monospace;
-            font-size: 0.9rem;
-            color: #a5b4fc;
+        .code-block code {
+            color: #a8d8ff;
         }
 
-        .inline-code {
-            background: rgba(99, 102, 241, 0.2);
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
-            font-family: 'Fira Code', monospace;
-            color: var(--secondary);
-        }
-
-        /* Workflow Steps */
-        .workflow-steps {
-            display: grid;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-
-        .step {
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: var(--light);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: rgba(99, 102, 241, 0.1);
-            border-radius: 8px;
-            border-left: 4px solid var(--primary);
+            gap: 0.5rem;
         }
 
-        .step-number {
-            width: 40px;
-            height: 40px;
-            background: var(--primary);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            flex-shrink: 0;
+        .copy-btn:hover {
+            background: rgba(240, 147, 251, 0.3);
+            transform: translateY(-2px);
         }
 
-        /* Grid Layout for Commands */
-        .commands-grid {
+        .copy-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .copy-btn.copied {
+            background: rgba(76, 175, 80, 0.3);
+            color: #4caf50;
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .command-item {
-            background: rgba(15, 23, 42, 0.5);
-            border-radius: 12px;
-            padding: 1.5rem;
-            border: 1px solid rgba(99, 102, 241, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .command-item:hover {
-            border-color: var(--secondary);
-            transform: scale(1.02);
-        }
-
-        .command-item h4 {
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .command-item code {
-            display: block;
-            background: var(--code-bg);
-            padding: 0.8rem;
-            border-radius: 8px;
-            margin-top: 0.5rem;
         }
 
         /* Comparison Table */
         .comparison {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 2rem;
             margin: 2rem 0;
         }
 
         .comparison-item {
-            text-align: center;
+            background: var(--card-bg);
             padding: 2rem;
-            background: rgba(99, 102, 241, 0.1);
-            border-radius: 16px;
-            border: 2px solid var(--primary);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .comparison-item h3 {
-            font-size: 2rem;
+        .comparison-item h4 {
+            font-size: 1.3rem;
             margin-bottom: 1rem;
-        }
-
-        .comparison-item p {
-            color: var(--gray);
-        }
-
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 3rem 2rem;
-            background: rgba(15, 23, 42, 0.8);
-            border-top: 1px solid rgba(99, 102, 241, 0.2);
-            margin-top: 4rem;
-        }
-
-        footer p {
-            color: var(--gray);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
 
         /* Animations */
@@ -410,36 +376,20 @@
             }
         }
 
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-            }
-            to {
+        @keyframes float {
+            0%, 100% {
                 transform: translateY(0);
             }
-        }
-
-        @keyframes glow {
-            from {
-                text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
-            }
-            to {
-                text-shadow: 0 0 20px rgba(99, 102, 241, 0.8), 0 0 30px rgba(236, 72, 153, 0.5);
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                transform: translate(-50%, -50%) scale(1);
-                opacity: 0.5;
-            }
             50% {
-                transform: translate(-50%, -50%) scale(1.2);
-                opacity: 0.8;
+                transform: translateY(-20px);
             }
         }
 
-        /* Floating particles */
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* Particles Background */
         .particles {
             position: fixed;
             top: 0;
@@ -456,11 +406,11 @@
             height: 4px;
             background: var(--primary);
             border-radius: 50%;
-            animation: float 15s infinite;
             opacity: 0.3;
+            animation: floatParticle 15s infinite;
         }
 
-        @keyframes float {
+        @keyframes floatParticle {
             0%, 100% {
                 transform: translateY(100vh) rotate(0deg);
                 opacity: 0;
@@ -483,33 +433,53 @@
                 padding: 1rem;
             }
 
-            .nav-menu {
-                gap: 0.3rem;
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(15, 15, 35, 0.98);
+                flex-direction: column;
+                padding: 2rem;
+                gap: 1rem;
             }
 
-            .nav-menu li a {
-                padding: 0.4rem 0.6rem;
-                font-size: 0.8rem;
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
             }
 
             .hero h1 {
                 font-size: 2.5rem;
             }
 
-            .hero .subtitle {
-                font-size: 1.2rem;
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .hero-icons {
+                gap: 1.5rem;
+            }
+
+            .hero-icon {
+                width: 70px;
+                height: 70px;
+            }
+
+            .comparison {
+                grid-template-columns: 1fr;
             }
 
             .section-title {
                 font-size: 2rem;
             }
-
-            .content-card {
-                padding: 1.5rem;
-            }
         }
 
-        /* Scroll indicator */
+        /* Scroll Indicator */
         .scroll-indicator {
             position: absolute;
             bottom: 2rem;
@@ -535,571 +505,839 @@
                 transform: translateX(-50%) translateY(-5px);
             }
         }
+
+        /* Definition Cards */
+        .definition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .definition-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .definition-card strong {
+            color: var(--primary);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Step Process */
+        .step-process {
+            counter-reset: step;
+        }
+
+        .step {
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .step h4 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
     </style>
 </head>
 <body>
     <!-- Particles Background -->
     <div class="particles" id="particles"></div>
 
-    <!-- Navigation -->
+    <!-- Navbar -->
     <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">GIT NLCM</div>
-            <ul class="nav-menu">
-                <li><a href="#home">หน้าแรก</a></li>
-                <li><a href="#intro">Git คืออะไร</a></li>
-                <li><a href="#install">ติดตั้ง</a></li>
-                <li><a href="#setup">ตั้งค่า</a></li>
-                <li><a href="#commands">คำสั่ง</a></li>
-                <li><a href="#workflow">Workflow</a></li>
-                <li><a href="#troubleshoot">แก้ปัญหา</a></li>
-            </ul>
+        <div class="logo">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" fill="url(#git-gradient)"/>
+                <path d="M12 6C10.34 6 9 7.34 9 9C9 10.66 10.34 12 12 12C13.66 12 15 10.66 15 9C15 7.34 13.66 6 12 6ZM12 14C9.33 14 7 15.33 7 17V18H17V17C17 15.33 14.67 14 12 14Z" fill="white"/>
+                <defs>
+                    <linearGradient id="git-gradient" x1="2" y1="2" x2="22" y2="22">
+                        <stop offset="0%" stop-color="#f093fb"/>
+                        <stop offset="100%" stop-color="#f5576c"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+            GIT NLCM
         </div>
+        <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home">หน้าแรก</a></li>
+            <li><a href="#about">Git vs GitHub</a></li>
+            <li><a href="#install">ติดตั้ง</a></li>
+            <li><a href="#setup">ตั้งค่า</a></li>
+            <li><a href="#commands">คำสั่ง</a></li>
+            <li><a href="#workflow">Workflow</a></li>
+            <li><a href="#troubleshoot">แก้ปัญหา</a></li>
+        </ul>
     </nav>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="hero-content">
-            <h1>🚀 GIT NLCM</h1>
-            <p class="subtitle">คู่มือ Git & GitHub ฉบับใช้งานจริง</p>
-            <div class="welcome-text">
-                <p>✨ <strong>ยินดีต้อนรับสู่โลกของ Version Control!</strong> ✨</p>
-                <br>
-                <p>ที่นี่คือคัมภีร์ Git ที่รวบรวมทุกสิ่งที่คุณต้องการ ตั้งแต่การติดตั้งจนถึงการใช้งานจริงในโปรเจกต์</p>
-                <p>ไม่ว่าคุณจะเป็นมือใหม่หรือต้องการทบทวนความรู้ ทุกคำสั่ง ทุกขั้นตอน ถูกจัดเรียงอย่างเข้าใจง่าย พร้อมใช้งานทันที!</p>
-                <p style="margin-top: 1rem; color: var(--primary); font-weight: 600;">
-                    💻 Commit อย่างมั่นใจ Push อย่างภาคภูมิ
-                </p>
+            <h1>ยินดีต้อนรับสู่โลกของ Version Control!</h1>
+            <p>คู่มือ Git & GitHub ฉบับสมบูรณ์ เรียงลำดับจากติดตั้งจนใช้งานจริง<br>เรียนรู้ได้ง่ายๆ ในหน้าเดียว</p>
+            
+            <div class="hero-icons">
+                <div class="hero-icon floating">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="#f05032" stroke-width="2" fill="none"/>
+                        <path d="M12 6C10.34 6 9 7.34 9 9C9 10.66 10.34 12 12 12C13.66 12 15 10.66 15 9C15 7.34 13.66 6 12 6Z" fill="#f05032"/>
+                        <path d="M12 14C9.33 14 7 15.33 7 17V18H17V17C17 15.33 14.67 14 12 14Z" fill="#f05032"/>
+                    </svg>
+                </div>
+                <div class="hero-icon floating" style="animation-delay: 0.5s;">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.477 2 2 6.477 2 12C2 16.418 4.865 20.166 8.836 21.487C9.336 21.579 9.52 21.273 9.52 21.013C9.52 20.78 9.513 20.017 9.509 19.163C6.723 19.768 6.136 17.82 6.136 17.82C5.681 16.664 5.026 16.356 5.026 16.356C4.12 15.738 5.094 15.751 5.094 15.751C6.094 15.821 6.621 16.776 6.621 16.776C7.516 18.308 8.966 17.867 9.536 17.611C9.627 16.964 9.886 16.523 10.173 16.268C7.957 16.017 5.63 15.159 5.63 13.12C5.63 12.539 5.838 12.001 6.186 11.559C5.654 10.919 4.969 9.999 5.163 8.664C5.163 8.664 6.17 8.341 7.513 9.255C8.074 9.099 8.676 9.021 9.278 9.021C9.88 9.021 10.482 9.099 11.043 9.255C12.386 8.341 13.393 8.664 13.393 8.664C13.587 9.999 12.902 10.919 12.37 11.559C12.718 12.001 12.926 12.539 12.926 13.12C12.926 15.164 10.593 16.016 8.372 16.263C8.729 16.571 9.053 17.181 9.053 18.113C9.053 19.446 9.042 20.521 9.042 20.859C9.042 21.122 9.224 21.431 9.731 21.336C13.699 20.013 16.562 16.267 16.562 11.85C16.562 6.329 12.085 1.852 6.562 1.852" fill="#181717"/>
+                    </svg>
+                </div>
             </div>
-            <div class="hero-buttons">
-                <a href="#intro" class="btn btn-primary">เริ่มเรียนรู้ →</a>
-                <a href="#commands" class="btn btn-secondary">ดูคำสั่งทั้งหมด</a>
-            </div>
+
+            <a href="#about" class="btn">เริ่มต้นเรียนรู้</a>
+            
             <div class="scroll-indicator">
-                <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                <svg viewBox="0 0 24 24">
+                    <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                </svg>
             </div>
         </div>
     </section>
 
-    <!-- Introduction Section -->
-    <section id="intro">
-        <h2 class="section-title">Git & GitHub คืออะไร?</h2>
+    <!-- About Section -->
+    <section class="section" id="about">
+        <h2 class="section-title">Git คืออะไร?</h2>
         
         <div class="comparison">
             <div class="comparison-item">
-                <h3>📦 Git</h3>
-                <p>โปรแกรมจัดการเวอร์ชัน</p>
-                <hr style="border: 0; border-top: 1px solid var(--primary); margin: 1rem 0;">
-                <ul style="text-align: left; color: #cbd5e1;">
+                <h4>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="#f05032" stroke-width="2" fill="none"/>
+                        <path d="M12 6C10.34 6 9 7.34 9 9C9 10.66 10.34 12 12 12C13.66 12 15 10.66 15 9C15 7.34 13.66 6 12 6Z" fill="#f05032"/>
+                        <path d="M12 14C9.33 14 7 15.33 7 17V18H17V17C17 15.33 14.67 14 12 14Z" fill="#f05032"/>
+                    </svg>
+                    Git
+                </h4>
+                <p>โปรแกรมจัดการเวอร์ชัน (Version Control)</p>
+                <ul style="margin-top: 1rem;">
                     <li>บันทึกประวัติการแก้โค้ด</li>
                     <li>ย้อนกลับเวอร์ชันได้</li>
                     <li>สำรองโค้ด</li>
+                    <li>ทำงานร่วมกับ GitHub</li>
                     <li>ใช้งานได้แม้ไม่มีอินเทอร์เน็ต</li>
                 </ul>
             </div>
+            
             <div class="comparison-item">
-                <h3>☁️ GitHub</h3>
-                <p>เว็บไซต์เก็บ Repository</p>
-                <hr style="border: 0; border-top: 1px solid var(--secondary); margin: 1rem 0;">
-                <ul style="text-align: left; color: #cbd5e1;">
-                    <li>Backup Project บน Cloud</li>
+                <h4>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2C6.477 2 2 6.477 2 12C2 16.418 4.865 20.166 8.836 21.487C9.336 21.579 9.52 21.273 9.52 21.013C9.52 20.78 9.513 20.017 9.509 19.163C6.723 19.768 6.136 17.82 6.136 17.82C5.681 16.664 5.026 16.356 5.026 16.356C4.12 15.738 5.094 15.751 5.094 15.751C6.094 15.821 6.621 16.776 6.621 16.776C7.516 18.308 8.966 17.867 9.536 17.611C9.627 16.964 9.886 16.523 10.173 16.268C7.957 16.017 5.63 15.159 5.63 13.12C5.63 12.539 5.838 12.001 6.186 11.559C5.654 10.919 4.969 9.999 5.163 8.664C5.163 8.664 6.17 8.341 7.513 9.255C8.074 9.099 8.676 9.021 9.278 9.021C9.88 9.021 10.482 9.099 11.043 9.255C12.386 8.341 13.393 8.664 13.393 8.664C13.587 9.999 12.902 10.919 12.37 11.559C12.718 12.001 12.926 12.539 12.926 13.12C12.926 15.164 10.593 16.016 8.372 16.263C8.729 16.571 9.053 17.181 9.053 18.113C9.053 19.446 9.042 20.521 9.042 20.859C9.042 21.122 9.224 21.431 9.731 21.336C13.699 20.013 16.562 16.267 16.562 11.85C16.562 6.329 12.085 1.852 6.562 1.852" fill="#181717"/>
+                    </svg>
+                    GitHub
+                </h4>
+                <p>เว็บไซต์เก็บ Git Repository (Cloud)</p>
+                <ul style="margin-top: 1rem;">
+                    <li>Backup Project</li>
                     <li>แชร์โปรเจกต์</li>
                     <li>ทำงานหลายเครื่อง</li>
-                    <li>ทำงานร่วมกันหลายคน</li>
+                    <li>ทำงานหลายคน</li>
                 </ul>
             </div>
         </div>
 
-        <div class="content-card">
-            <h3>🎯 สรุปง่ายๆ</h3>
-            <p><span class="inline-code">Git</span> = โปรแกรมบนเครื่องของคุณ</p>
-            <p><span class="inline-code">GitHub</span> = ที่เก็บบน Cloud</p>
-        </div>
-    </section>
-
-    <!-- Installation Section -->
-    <section id="install">
-        <h2 class="section-title">📥 ติดตั้ง Git</h2>
-        
-        <div class="content-card">
-            <h3>ดาวน์โหลดและติดตั้ง</h3>
-            <p>ไปที่: <a href="https://git-scm.com/downloads" target="_blank" style="color: var(--primary);">https://git-scm.com/downloads</a></p>
-            
-            <div class="workflow-steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div>เลือก ✔ Git from the command line and also from 3rd-party software</div>
+        <div class="card">
+            <h3>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#f093fb" stroke-width="2" fill="none"/>
+                    <path d="M2 17L12 22L22 17" stroke="#f093fb" stroke-width="2" fill="none"/>
+                    <path d="M2 12L12 17L22 12" stroke="#f093fb" stroke-width="2" fill="none"/>
+                </svg>
+                ศัพท์ที่ควรรู้
+            </h3>
+            <div class="definition-grid">
+                <div class="definition-card">
+                    <strong>Commit</strong>
+                    บันทึกการเปลี่ยนแปลง
                 </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div>เลือก ✔ Use bundled OpenSSH</div>
+                <div class="definition-card">
+                    <strong>Push</strong>
+                    ส่งขึ้น GitHub
                 </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div>เลือก ✔ Use the native Windows Secure Channel library</div>
+                <div class="definition-card">
+                    <strong>Pull</strong>
+                    ดึงจาก GitHub
                 </div>
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <div>กด Next ไปเรื่อยๆ จนเสร็จ</div>
+                <div class="definition-card">
+                    <strong>Clone</strong>
+                    ดาวน์โหลดโปรเจกต์
+                </div>
+                <div class="definition-card">
+                    <strong>Repository</strong>
+                    โปรเจกต์
+                </div>
+                <div class="definition-card">
+                    <strong>Branch</strong>
+                    สายการพัฒนา
+                </div>
+                <div class="definition-card">
+                    <strong>Merge</strong>
+                    รวมโค้ด
+                </div>
+                <div class="definition-card">
+                    <strong>Remote</strong>
+                    ลิงก์ GitHub
                 </div>
             </div>
         </div>
+    </section>
 
-        <div class="content-card">
-            <h3>✅ ตรวจสอบการติดตั้ง</h3>
-            <pre><code>git --version</code></pre>
-            <p>ตัวอย่างผลลัพธ์:</p>
-            <pre><code>git version 2.55.x</code></pre>
+    <!-- Install Section -->
+    <section class="section" id="install">
+        <h2 class="section-title">ติดตั้ง Git</h2>
+        
+        <div class="card">
+            <h3>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="#f093fb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <polyline points="17 8 12 3 7 8" stroke="#f093fb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="12" y1="3" x2="12" y2="15" stroke="#f093fb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                ดาวน์โหลดและติดตั้ง
+            </h3>
+            <p>โหลดจาก: <a href="https://git-scm.com/downloads" target="_blank" style="color: var(--primary);">https://git-scm.com/downloads</a></p>
+            
+            <div class="step-process" style="margin-top: 2rem;">
+                <div class="step">
+                    <h4>เลือกตัวเลือกสำคัญ</h4>
+                    <ul>
+                        <li>✔ Git from the command line and also from 3rd-party software</li>
+                        <li>✔ Use bundled OpenSSH</li>
+                        <li>✔ Use the native Windows Secure Channel library</li>
+                    </ul>
+                </div>
+                <div class="step">
+                    <h4>กด Next ไปเรื่อยๆ จน Finish</h4>
+                </div>
+            </div>
+
+            <div class="code-container">
+                <div class="code-block">
+                    <code>git --version</code>
+                </div>
+                <button class="copy-btn" onclick="copyCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                        <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    คัดลอก
+                </button>
+            </div>
+            <p>ตัวอย่างผลลัพธ์: <code style="color: var(--primary);">git version 2.55.x</code></p>
         </div>
     </section>
 
     <!-- Setup Section -->
-    <section id="setup">
-        <h2 class="section-title">⚙️ ตั้งค่าครั้งแรก</h2>
-        <p style="color: var(--gray); margin-bottom: 2rem;">(ทำเพียงครั้งเดียว)</p>
-
-        <div class="content-card">
-            <h3>ตั้งค่า User Name และ Email</h3>
-            <pre><code>git config --global user.name "ชื่อ GitHub"</code></pre>
-            <pre><code>git config --global user.email "อีเมล GitHub"</code></pre>
+    <section class="section" id="setup">
+        <h2 class="section-title">ตั้งค่าครั้งแรก</h2>
+        
+        <div class="card">
+            <h3>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" stroke="#f093fb" stroke-width="2"/>
+                    <path d="M19.4 15C20.5899 13.7103 21.2749 12.0035 21.3333 10.2083C21.3917 8.41316 20.82 6.66667 19.7143 5.25C18.6086 3.83333 17.0357 2.83333 15.2857 2.42857C13.5357 2.02381 11.7143 2.2381 10.1429 3.02381L9.85714 3.16667" stroke="#f093fb" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M4.6 9C3.41014 10.2897 2.72513 11.9965 2.66667 13.7917C2.60821 15.5868 3.17997 17.3333 4.28571 18.75C5.39146 20.1667 6.96429 21.1667 8.71429 21.5714C10.4643 21.9762 12.2857 21.7619 13.8571 20.9762L14.1429 20.8333" stroke="#f093fb" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                ตั้งค่า User (ทำครั้งเดียว)
+            </h3>
             
-            <h4 style="margin-top: 1.5rem; color: var(--primary);">ตรวจสอบการตั้งค่า</h4>
-            <pre><code>git config --global --list</code></pre>
+            <div class="code-container">
+                <div class="code-block">
+                    <code>git config --global user.name "ชื่อ GitHub"</code>
+                </div>
+                <button class="copy-btn" onclick="copyCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                        <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    คัดลอก
+                </button>
+            </div>
+
+            <div class="code-container">
+                <div class="code-block">
+                    <code>git config --global user.email "อีเมล GitHub"</code>
+                </div>
+                <button class="copy-btn" onclick="copyCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                        <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    คัดลอก
+                </button>
+            </div>
+
+            <div class="code-container">
+                <div class="code-block">
+                    <code>git config --global --list</code>
+                </div>
+                <button class="copy-btn" onclick="copyCode(this)">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                        <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                    </svg>
+                    คัดลอก
+                </button>
+            </div>
         </div>
 
-        <div class="content-card">
-            <h3>สร้าง Repository บน GitHub</h3>
+        <div class="card">
+            <h3>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="3" width="18" height="18" rx="2" stroke="#f093fb" stroke-width="2"/>
+                    <path d="M3 9H21" stroke="#f093fb" stroke-width="2"/>
+                    <path d="M9 21V9" stroke="#f093fb" stroke-width="2"/>
+                </svg>
+                สร้าง Repository บน GitHub
+            </h3>
             <ul>
                 <li>กด New Repository</li>
-                <li><strong>ไม่ต้องติ๊ก</strong> Add README, .gitignore, License</li>
+                <li>ไม่ต้องติ๊ก Add README, .gitignore, License</li>
                 <li>สร้าง Repository เปล่าๆ</li>
             </ul>
         </div>
     </section>
 
     <!-- Commands Section -->
-    <section id="commands">
-        <h2 class="section-title">💻 คำสั่งทั้งหมด</h2>
+    <section class="section" id="commands">
+        <h2 class="section-title">คำสั่งทั้งหมด</h2>
 
-        <div class="content-card">
-            <h3>🚀 เริ่มโปรเจกต์ใหม่ (ครั้งแรก)</h3>
-            <div class="workflow-steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div>เข้าโฟลเดอร์โปรเจกต์</div>
-                </div>
-                <pre><code>cd C:\Users\Administrator\Documents\AI CITY</code></pre>
+        <div class="grid-2">
+            <div class="card">
+                <h3>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 5V19" stroke="#f093fb" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M5 12L12 5L19 12" stroke="#f093fb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    เริ่มโปรเจกต์ใหม่
+                </h3>
                 
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div>สร้าง Git Repository</div>
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>cd C:\Users\Administrator\Documents\AI CITY</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
                 </div>
-                <pre><code>git init</code></pre>
+
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>git init</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
+                </div>
+
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>git add .</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
+                </div>
+
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>git commit -m "Initial commit"</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
+                </div>
+
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>git remote add origin https://github.com/USERNAME/REPOSITORY.git</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
+                </div>
+
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>git branch -M main</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
+                </div>
+
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>git push -u origin main</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="10" stroke="#f093fb" stroke-width="2"/>
+                        <path d="M12 6V12L16 14" stroke="#f093fb" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    คำสั่งที่ใช้บ่อย
+                </h3>
                 
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div>เพิ่มไฟล์ทั้งหมด</div>
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>git status</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
                 </div>
-                <pre><code>git add .</code></pre>
-                
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <div>สร้าง Commit แรก</div>
+
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>git add .</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
                 </div>
-                <pre><code>git commit -m "Initial commit"</code></pre>
-                
-                <div class="step">
-                    <div class="step-number">5</div>
-                    <div>เชื่อมต่อกับ GitHub</div>
+
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>git commit -m "ข้อความ"</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
                 </div>
-                <pre><code>git remote add origin https://github.com/USERNAME/REPOSITORY.git</code></pre>
-                
-                <div class="step">
-                    <div class="step-number">6</div>
-                    <div>เปลี่ยน Branch เป็น main</div>
+
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>git push</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
                 </div>
-                <pre><code>git branch -M main</code></pre>
-                
-                <div class="step">
-                    <div class="step-number">7</div>
-                    <div>Push ขึ้น GitHub ครั้งแรก</div>
+
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>git pull</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
                 </div>
-                <pre><code>git push -u origin main</code></pre>
+
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>git branch</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
+                </div>
+
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>git remote -v</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
+                </div>
+
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>git log --oneline</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
+                </div>
+
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>git diff</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
+                </div>
             </div>
         </div>
 
-        <div class="content-card">
-            <h3>📋 คำสั่งที่ใช้บ่อยที่สุด</h3>
-            <div class="commands-grid">
-                <div class="command-item">
-                    <h4>เช็กสถานะ</h4>
-                    <code>git status</code>
+        <div class="grid-2">
+            <div class="card">
+                <h3>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 4V20C1 20.5304 1.21071 21.0391 1.58579 21.4142C1.96086 21.7893 2.46957 22 3 22H21C21.5304 22 22.0391 21.7893 22.4142 21.4142C22.7893 21.0391 23 20.5304 23 20V4C23 3.46957 22.7893 2.96086 22.4142 2.58579C22.0391 2.21071 21.5304 2 21 2H3C2.46957 2 1.96086 2.21071 1.58579 2.58579C1.21071 2.96086 1 3.46957 1 4Z" stroke="#f093fb" stroke-width="2"/>
+                        <path d="M1 10H23" stroke="#f093fb" stroke-width="2"/>
+                    </svg>
+                    Clone โปรเจกต์
+                </h3>
+                
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>git clone https://github.com/USERNAME/REPOSITORY.git</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
                 </div>
-                <div class="command-item">
-                    <h4>เพิ่มไฟล์ทั้งหมด</h4>
-                    <code>git add .</code>
-                </div>
-                <div class="command-item">
-                    <h4>Commit</h4>
-                    <code>git commit -m "ข้อความ"</code>
-                </div>
-                <div class="command-item">
-                    <h4>Push ขึ้น GitHub</h4>
-                    <code>git push</code>
-                </div>
-                <div class="command-item">
-                    <h4>Pull จาก GitHub</h4>
-                    <code>git pull</code>
-                </div>
-                <div class="command-item">
-                    <h4>ดู Branch</h4>
-                    <code>git branch</code>
-                </div>
-                <div class="command-item">
-                    <h4>ดู Remote</h4>
-                    <code>git remote -v</code>
-                </div>
-                <div class="command-item">
-                    <h4>ดูประวัติ Commit</h4>
-                    <code>git log</code>
-                </div>
-                <div class="command-item">
-                    <h4>ดูประวัติแบบสั้น</h4>
-                    <code>git log --oneline</code>
-                </div>
-                <div class="command-item">
-                    <h4>ดูความต่างของไฟล์</h4>
-                    <code>git diff</code>
+
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>cd REPOSITORY</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
                 </div>
             </div>
-        </div>
 
-        <div class="content-card">
-            <h3>🔄 Clone โปรเจกต์จาก GitHub</h3>
-            <pre><code>git clone https://github.com/USERNAME/REPOSITORY.git</code></pre>
-            <pre><code>cd REPOSITORY</code></pre>
-        </div>
+            <div class="card">
+                <h3>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 6L6 18" stroke="#f093fb" stroke-width="2" stroke-linecap="round"/>
+                        <path d="M6 6L18 18" stroke="#f093fb" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    ลบ Git / เปลี่ยน Remote
+                </h3>
+                
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>git remote remove origin</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
+                </div>
 
-        <div class="content-card">
-            <h3>🔗 เปลี่ยน GitHub Repository</h3>
-            <pre><code>git remote remove origin</code></pre>
-            <pre><code>git remote add origin https://github.com/USERNAME/REPOSITORY.git</code></pre>
-            <pre><code>git remote -v</code></pre>
-        </div>
-
-        <div class="content-card">
-            <h3>🗑️ ลบ Git ออกจากโปรเจกต์</h3>
-            <p><strong>CMD:</strong></p>
-            <pre><code>rmdir /s /q .git</code></pre>
-            <p><strong>PowerShell:</strong></p>
-            <pre><code>Remove-Item -Recurse -Force .git</code></pre>
-            <p>เริ่มใหม่:</p>
-            <pre><code>git init</code></pre>
+                <div class="code-container">
+                    <div class="code-block">
+                        <code>rmdir /s /q .git</code>
+                    </div>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    </button>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Workflow Section -->
-    <section id="workflow">
-        <h2 class="section-title">🔄 Workflow ใช้งานทุกวัน</h2>
-
-        <div class="content-card">
-            <h3>📅 ลำดับการทำงานจริง</h3>
-            <div class="workflow-steps">
+    <section class="section" id="workflow">
+        <h2 class="section-title">Workflow ใช้งานทุกวัน</h2>
+        
+        <div class="card">
+            <h3>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="3" y="4" width="18" height="18" rx="2" stroke="#f093fb" stroke-width="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6" stroke="#f093fb" stroke-width="2"/>
+                    <line x1="8" y1="2" x2="8" y2="6" stroke="#f093fb" stroke-width="2"/>
+                    <line x1="3" y1="10" x2="21" y2="10" stroke="#f093fb" stroke-width="2"/>
+                </svg>
+                ลำดับการทำงานจริง
+            </h3>
+            
+            <div class="step-process">
                 <div class="step">
-                    <div class="step-number">1</div>
-                    <div>เปิด VS Code</div>
+                    <h4>เปิด VS Code</h4>
                 </div>
                 <div class="step">
-                    <div class="step-number">2</div>
-                    <div>ดึงโค้ดล่าสุด</div>
+                    <h4>ดึงโค้ดล่าสุด</h4>
+                    <div class="code-container">
+                        <div class="code-block">
+                            <code>git pull</code>
+                        </div>
+                        <button class="copy-btn" onclick="copyCode(this)">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                                <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                            คัดลอก
+                        </button>
+                    </div>
                 </div>
-                <pre><code>git pull</code></pre>
-                
                 <div class="step">
-                    <div class="step-number">3</div>
-                    <div>เขียนโค้ด</div>
+                    <h4>เขียนโค้ด</h4>
                 </div>
-                
                 <div class="step">
-                    <div class="step-number">4</div>
-                    <div>ตรวจสอบสถานะ</div>
+                    <h4>ตรวจสอบสถานะ</h4>
+                    <div class="code-container">
+                        <div class="code-block">
+                            <code>git status</code>
+                        </div>
+                        <button class="copy-btn" onclick="copyCode(this)">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                                <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                            คัดลอก
+                        </button>
+                    </div>
                 </div>
-                <pre><code>git status</code></pre>
-                
                 <div class="step">
-                    <div class="step-number">5</div>
-                    <div>เพิ่มไฟล์</div>
+                    <h4>เพิ่มไฟล์ทั้งหมด</h4>
+                    <div class="code-container">
+                        <div class="code-block">
+                            <code>git add .</code>
+                        </div>
+                        <button class="copy-btn" onclick="copyCode(this)">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                                <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                            คัดลอก
+                        </button>
+                    </div>
                 </div>
-                <pre><code>git add .</code></pre>
-                
                 <div class="step">
-                    <div class="step-number">6</div>
-                    <div>Commit</div>
-                </div>
-                <pre><code>git commit -m "แก้ระบบ Login"</code></pre>
-                
-                <div class="step">
-                    <div class="step-number">7</div>
-                    <div>Push ขึ้น GitHub</div>
-                </div>
-                <pre><code>git push</code></pre>
-                
-                <div class="step">
-                    <div class="step-number">8</div>
-                    <div>ปิดเครื่อง 😴</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="content-card">
-            <h3>⚡ จำง่ายที่สุด</h3>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
-                <div>
-                    <h4 style="color: var(--secondary); margin-bottom: 1rem;">🎯 ครั้งแรก</h4>
-                    <pre><code>git init
-git add .
-git commit
-git remote add origin
-git branch -M main
-git push -u origin main</code></pre>
-                </div>
-                <div>
-                    <h4 style="color: var(--primary); margin-bottom: 1rem;">📅 ทุกวัน</h4>
-                    <pre><code>git pull
-# เขียนโค้ด
-git add .
-git commit
-git push</code></pre>
-                </div>
-            </div>
-        </div>
-
-        <div class="content-card">
-            <h3>📖 ศัพท์ที่ควรรู้</h3>
-            <div class="commands-grid">
-                <div class="command-item">
-                    <h4>Git</h4>
-                    <code>บันทึกประวัติ</code>
-                </div>
-                <div class="command-item">
-                    <h4>GitHub</h4>
-                    <code>ที่เก็บบน Cloud</code>
-                </div>
-                <div class="command-item">
                     <h4>Commit</h4>
-                    <code>บันทึกการเปลี่ยนแปลง</code>
+                    <div class="code-container">
+                        <div class="code-block">
+                            <code>git commit -m "แก้ระบบ Login"</code>
+                        </div>
+                        <button class="copy-btn" onclick="copyCode(this)">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                                <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                            คัดลอก
+                        </button>
+                    </div>
                 </div>
-                <div class="command-item">
-                    <h4>Push</h4>
-                    <code>ส่งขึ้น GitHub</code>
+                <div class="step">
+                    <h4>Push ขึ้น GitHub</h4>
+                    <div class="code-container">
+                        <div class="code-block">
+                            <code>git push</code>
+                        </div>
+                        <button class="copy-btn" onclick="copyCode(this)">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                                <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                            คัดลอก
+                        </button>
+                    </div>
                 </div>
-                <div class="command-item">
-                    <h4>Pull</h4>
-                    <code>ดึงจาก GitHub</code>
+                <div class="step">
+                    <h4>ปิดเครื่อง ✅</h4>
                 </div>
-                <div class="command-item">
-                    <h4>Clone</h4>
-                    <code>ดาวน์โหลดโปรเจกต์</code>
-                </div>
-                <div class="command-item">
-                    <h4>Repository</h4>
-                    <code>โปรเจกต์</code>
-                </div>
-                <div class="command-item">
-                    <h4>Branch</h4>
-                    <code>สายการพัฒนา</code>
-                </div>
-                <div class="command-item">
-                    <h4>Merge</h4>
-                    <code>รวมโค้ด</code>
-                </div>
-                <div class="command-item">
-                    <h4>Remote</h4>
-                    <code>ลิงก์ GitHub</code>
-                </div>
-                <div class="command-item">
-                    <h4>Origin</h4>
-                    <code>GitHub หลัก</code>
-                </div>
+            </div>
+        </div>
+
+        <div class="grid-2">
+            <div class="card">
+                <h3>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 8V12L15 15" stroke="#f093fb" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="12" cy="12" r="10" stroke="#f093fb" stroke-width="2"/>
+                    </svg>
+                    สิ่งที่ทำครั้งเดียว
+                </h3>
+                <ul>
+                    <li>git config --global user.name</li>
+                    <li>git config --global user.email</li>
+                    <li>git init</li>
+                    <li>git remote add origin</li>
+                    <li>git branch -M main</li>
+                    <li>git push -u origin main</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 8V12L15 15" stroke="#f093fb" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="12" cy="12" r="10" stroke="#f093fb" stroke-width="2"/>
+                    </svg>
+                    สิ่งที่ทำทุกวัน
+                </h3>
+                <ul>
+                    <li>git pull</li>
+                    <li>git status</li>
+                    <li>git add .</li>
+                    <li>git commit -m "..."</li>
+                    <li>git push</li>
+                </ul>
             </div>
         </div>
     </section>
-
-    <!-- Troubleshooting Section -->
-    <section id="troubleshoot">
-        <h2 class="section-title">🔧 แก้ปัญหา</h2>
-
-        <div class="content-card">
-            <h3>❓ ถ้า Repository มี README อยู่แล้ว</h3>
-            <p>ดึงมาก่อน:</p>
-            <pre><code>git pull origin main --allow-unrelated-histories</code></pre>
-            <p>ถ้าไม่ต้องการ README:</p>
-            <pre><code>git push -u origin main --force</code></pre>
-        </div>
-
-        <div class="content-card">
-            <h3>❓ ถ้า Push ไม่ได้</h3>
-            <pre><code>git pull</code></pre>
-            <pre><code>git push</code></pre>
-        </div>
-
-        <div class="content-card">
-            <h3>❓ ถ้า Merge Conflict</h3>
-            <div class="workflow-steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div>ดูไฟล์ที่ Conflict และแก้ไขให้เรียบร้อย</div>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div>เพิ่มไฟล์</div>
-                </div>
-                <pre><code>git add .</code></pre>
-                
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div>Commit</div>
-                </div>
-                <pre><code>git commit -m "Resolve merge conflict"</code></pre>
-                
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <div>Push</div>
-                </div>
-                <pre><code>git push</code></pre>
-            </div>
-        </div>
-
-        <div class="content-card">
-            <h3>❓ ถ้า Git หาไม่เจอ</h3>
-            <p>เช็กก่อน:</p>
-            <pre><code>git --version</code></pre>
-            <p>ถ้าไม่เจอ:</p>
-            <ul>
-                <li>Restart VS Code</li>
-                <li>หรือ Restart Windows</li>
-            </ul>
-        </div>
-
-        <div class="content-card">
-            <h3>❓ ถ้าเปลี่ยนคอม</h3>
-            <div class="workflow-steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div>ติดตั้ง Git</div>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div>Clone Project</div>
-                </div>
-                <pre><code>git clone URL</code></pre>
-                
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div>เข้าโปรเจกต์</div>
-                </div>
-                <pre><code>cd PROJECT</code></pre>
-                
-                <div class="step">
-                    <div class="step-number">4</div>
-                    <div>ใช้งานได้ทันที! ✨</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <p>🚀 GIT NLCM - คู่มือ Git & GitHub ฉบับใช้งานจริง</p>
-        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Made with ❤️ for developers</p>
-    </footer>
 
     <script>
-        // Create floating particles
+        // Create particles
         function createParticles() {
             const container = document.getElementById('particles');
-            const particleCount = 50;
-
-            for (let i = 0; i < particleCount; i++) {
+            for (let i = 0; i < 50; i++) {
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 particle.style.left = Math.random() * 100 + '%';
                 particle.style.animationDelay = Math.random() * 15 + 's';
                 particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
-                
-                const colors = ['#6366f1', '#ec4899', '#8b5cf6'];
-                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                
                 container.appendChild(particle);
             }
         }
 
-        // Active nav highlighting
-        function updateActiveNav() {
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('.nav-menu li a');
-
-            let current = '';
-
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (scrollY >= (sectionTop - 200)) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + current) {
-                    link.classList.add('active');
-                }
+        // Copy code function
+        function copyCode(btn) {
+            const code = btn.previousElementSibling.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.classList.add('copied');
+                btn.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    คัดลอกแล้ว!
+                `;
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = `
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+                            <path d="M5 15H4C3.46957 15 2.96086 14.7893 2.58579 14.4142C2.21071 14.0391 2 13.5304 2 13V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2H13C13.5304 2 14.0391 2.21071 14.4142 2.58579C14.7893 2.96086 15 3.46957 15 4V5" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                        คัดลอก
+                    `;
+                }, 2000);
             });
         }
 
-        // Smooth scroll for nav links
+        // Mobile menu toggle
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
                     target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+                        behavior: 'smooth'
                     });
+                    // Close mobile menu if open
+                    document.getElementById('navLinks').classList.remove('active');
                 }
             });
         });
 
         // Initialize
-        window.addEventListener('load', () => {
-            createParticles();
-            updateActiveNav();
-        });
-
-        window.addEventListener('scroll', updateActiveNav);
-
-        // Add animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.content-card').forEach(card => {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(30px)';
-            card.style.transition = 'all 0.6s ease-out';
-            observer.observe(card);
-        });
+        createParticles();
     </script>
 </body>
 </html>
