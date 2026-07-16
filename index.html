@@ -62,10 +62,24 @@
             background-clip: text;
         }
 
-        .logo svg {
+        .logo img {
             width: 40px;
             height: 40px;
+            object-fit: contain;
             filter: drop-shadow(0 0 10px rgba(240, 147, 251, 0.5));
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px rgba(240, 147, 251, 0.3)); }
+            to { filter: drop-shadow(0 0 15px rgba(240, 147, 251, 0.8)); }
+        }
+
+        .hero-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 20px rgba(240, 147, 251, 0.4));
         }
 
         .nav-links {
@@ -161,11 +175,6 @@
 
         .hero-icon:hover {
             transform: scale(1.1) rotate(5deg);
-        }
-
-        .hero-icon svg {
-            width: 100%;
-            height: 100%;
         }
 
         .btn {
@@ -569,16 +578,7 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="logo">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z" fill="url(#git-gradient)"/>
-                <path d="M12 6C10.34 6 9 7.34 9 9C9 10.66 10.34 12 12 12C13.66 12 15 10.66 15 9C15 7.34 13.66 6 12 6ZM12 14C9.33 14 7 15.33 7 17V18H17V17C17 15.33 14.67 14 12 14Z" fill="white"/>
-                <defs>
-                    <linearGradient id="git-gradient" x1="2" y1="2" x2="22" y2="22">
-                        <stop offset="0%" stop-color="#f093fb"/>
-                        <stop offset="100%" stop-color="#f5576c"/>
-                    </linearGradient>
-                </defs>
-            </svg>
+            <img src="https://verin.online/git.png" alt="Git Logo">
             GIT NLCM
         </div>
         <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
@@ -601,16 +601,10 @@
             
             <div class="hero-icons">
                 <div class="hero-icon floating">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="12" cy="12" r="10" stroke="#f05032" stroke-width="2" fill="none"/>
-                        <path d="M12 6C10.34 6 9 7.34 9 9C9 10.66 10.34 12 12 12C13.66 12 15 10.66 15 9C15 7.34 13.66 6 12 6Z" fill="#f05032"/>
-                        <path d="M12 14C9.33 14 7 15.33 7 17V18H17V17C17 15.33 14.67 14 12 14Z" fill="#f05032"/>
-                    </svg>
+                    <img src="https://verin.online/git.png" alt="Git Logo">
                 </div>
                 <div class="hero-icon floating" style="animation-delay: 0.5s;">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2C6.477 2 2 6.477 2 12C2 16.418 4.865 20.166 8.836 21.487C9.336 21.579 9.52 21.273 9.52 21.013C9.52 20.78 9.513 20.017 9.509 19.163C6.723 19.768 6.136 17.82 6.136 17.82C5.681 16.664 5.026 16.356 5.026 16.356C4.12 15.738 5.094 15.751 5.094 15.751C6.094 15.821 6.621 16.776 6.621 16.776C7.516 18.308 8.966 17.867 9.536 17.611C9.627 16.964 9.886 16.523 10.173 16.268C7.957 16.017 5.63 15.159 5.63 13.12C5.63 12.539 5.838 12.001 6.186 11.559C5.654 10.919 4.969 9.999 5.163 8.664C5.163 8.664 6.17 8.341 7.513 9.255C8.074 9.099 8.676 9.021 9.278 9.021C9.88 9.021 10.482 9.099 11.043 9.255C12.386 8.341 13.393 8.664 13.393 8.664C13.587 9.999 12.902 10.919 12.37 11.559C12.718 12.001 12.926 12.539 12.926 13.12C12.926 15.164 10.593 16.016 8.372 16.263C8.729 16.571 9.053 17.181 9.053 18.113C9.053 19.446 9.042 20.521 9.042 20.859C9.042 21.122 9.224 21.431 9.731 21.336C13.699 20.013 16.562 16.267 16.562 11.85C16.562 6.329 12.085 1.852 6.562 1.852" fill="#181717"/>
-                    </svg>
+                    <img src="https://verin.online/github.png" alt="GitHub Logo">
                 </div>
             </div>
 
