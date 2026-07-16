@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIT NLCM - คู่มือ Git & GitHub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --dark: #0f172a;
+            --darker: #020617;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --code-bg: #1e293b;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 50%, #1e1b4b 100%);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+            animation: slideDown 0.5s ease-out;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-menu li a {
+            color: var(--light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            display: block;
+        }
+
+        .nav-menu li a:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .nav-menu li a.active {
+            background: var(--primary);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.5);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, var(--primary) 50%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero .subtitle {
+            font-size: 1.5rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .hero .welcome-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #cbd5e1;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 30px rgba(99, 102, 241, 0.6);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--light);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        .content-card {
+            background: rgba(30, 41, 59, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .content-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .content-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .content-card p, .content-card ul {
+            line-height: 1.8;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+
+        .content-card ul {
+            padding-left: 1.5rem;
+        }
+
+        .content-card li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Code Blocks */
+        pre {
+            background: var(--code-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            position: relative;
+        }
+
+        pre::before {
+            content: 'BASH';
+            position: absolute;
+            top: 0.5rem;
+            right: 1rem;
+            font-size: 0.75rem;
+            color: var(--gray);
+            font-family: 'Fira Code', monospace;
+        }
+
+        code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9rem;
+            color: #a5b4fc;
+        }
+
+        .inline-code {
+            background: rgba(99, 102, 241, 0.2);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Fira Code', monospace;
+            color: var(--secondary);
+        }
+
+        /* Workflow Steps */
+        .workflow-steps {
+            display: grid;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Grid Layout for Commands */
+        .commands-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .command-item {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .command-item:hover {
+            border-color: var(--secondary);
+            transform: scale(1.02);
+        }
+
+        .command-item h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .command-item code {
+            display: block;
+            background: var(--code-bg);
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+
+        /* Comparison Table */
+        .comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .comparison-item {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 16px;
+            border: 2px solid var(--primary);
+        }
+
+        .comparison-item h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-item p {
+            color: var(--gray);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: rgba(15, 23, 42, 0.8);
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+            margin-top: 4rem;
+        }
+
+        footer p {
+            color: var(--gray);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(99, 102, 241, 0.8), 0 0 30px rgba(236, 72, 153, 0.5);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.8;
+            }
+        }
+
+        /* Floating particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: float 15s infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-menu {
+                gap: 0.3rem;
+            }
+
+            .nav-menu li a {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.8rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero .subtitle {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .content-card {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator svg {
+            width: 30px;
+            height: 30px;
+            fill: var(--primary);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateX(-50%) translateY(0);
+            }
+            40% {
+                transform: translateX(-50%) translateY(-10px);
+            }
+            60% {
+                transform: translateX(-50%) translateY(-5px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Particles Background -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">GIT NLCM</div>
+            <ul class="nav-menu">
+                <li><a href="#home">หน้าแรก</a></li>
+                <li><a href="#intro">Git คืออะไร</a></li>
+                <li><a href="#install">ติดตั้ง</a></li>
+                <li><a href="#setup">ตั้งค่า</a></li>
+                <li><a href="#commands">คำสั่ง</a></li>
+                <li><a href="#workflow">Workflow</a></li>
+                <li><a href="#troubleshoot">แก้ปัญหา</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>🚀 GIT NLCM</h1>
+            <p class="subtitle">คู่มือ Git & GitHub ฉบับใช้งานจริง</p>
+            <div class="welcome-text">
+                <p>✨ <strong>ยินดีต้อนรับสู่โลกของ Version Control!</strong> ✨</p>
+                <br>
+                <p>ที่นี่คือคัมภีร์ Git ที่รวบรวมทุกสิ่งที่คุณต้องการ ตั้งแต่การติดตั้งจนถึงการใช้งานจริงในโปรเจกต์</p>
+                <p>ไม่ว่าคุณจะเป็นมือใหม่หรือต้องการทบทวนความรู้ ทุกคำสั่ง ทุกขั้นตอน ถูกจัดเรียงอย่างเข้าใจง่าย พร้อมใช้งานทันที!</p>
+                <p style="margin-top: 1rem; color: var(--primary); font-weight: 600;">
+                    💻 Commit อย่างมั่นใจ Push อย่างภาคภูมิ
+                </p>
+            </div>
+            <div class="hero-buttons">
+                <a href="#intro" class="btn btn-primary">เริ่มเรียนรู้ →</a>
+                <a href="#commands" class="btn btn-secondary">ดูคำสั่งทั้งหมด</a>
+            </div>
+            <div class="scroll-indicator">
+                <svg viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+            </div>
+        </div>
+    </section>
+
+    <!-- Introduction Section -->
+    <section id="intro">
+        <h2 class="section-title">Git & GitHub คืออะไร?</h2>
+        
+        <div class="comparison">
+            <div class="comparison-item">
+                <h3>📦 Git</h3>
+                <p>โปรแกรมจัดการเวอร์ชัน</p>
+                <hr style="border: 0; border-top: 1px solid var(--primary); margin: 1rem 0;">
+                <ul style="text-align: left; color: #cbd5e1;">
+                    <li>บันทึกประวัติการแก้โค้ด</li>
+                    <li>ย้อนกลับเวอร์ชันได้</li>
+                    <li>สำรองโค้ด</li>
+                    <li>ใช้งานได้แม้ไม่มีอินเทอร์เน็ต</li>
+                </ul>
+            </div>
+            <div class="comparison-item">
+                <h3>☁️ GitHub</h3>
+                <p>เว็บไซต์เก็บ Repository</p>
+                <hr style="border: 0; border-top: 1px solid var(--secondary); margin: 1rem 0;">
+                <ul style="text-align: left; color: #cbd5e1;">
+                    <li>Backup Project บน Cloud</li>
+                    <li>แชร์โปรเจกต์</li>
+                    <li>ทำงานหลายเครื่อง</li>
+                    <li>ทำงานร่วมกันหลายคน</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h3>🎯 สรุปง่ายๆ</h3>
+            <p><span class="inline-code">Git</span> = โปรแกรมบนเครื่องของคุณ</p>
+            <p><span class="inline-code">GitHub</span> = ที่เก็บบน Cloud</p>
+        </div>
+    </section>
+
+    <!-- Installation Section -->
+    <section id="install">
+        <h2 class="section-title">📥 ติดตั้ง Git</h2>
+        
+        <div class="content-card">
+            <h3>ดาวน์โหลดและติดตั้ง</h3>
+            <p>ไปที่: <a href="https://git-scm.com/downloads" target="_blank" style="color: var(--primary);">https://git-scm.com/downloads</a></p>
+            
+            <div class="workflow-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div>เลือก ✔ Git from the command line and also from 3rd-party software</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div>เลือก ✔ Use bundled OpenSSH</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div>เลือก ✔ Use the native Windows Secure Channel library</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div>กด Next ไปเรื่อยๆ จนเสร็จ</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h3>✅ ตรวจสอบการติดตั้ง</h3>
+            <pre><code>git --version</code></pre>
+            <p>ตัวอย่างผลลัพธ์:</p>
+            <pre><code>git version 2.55.x</code></pre>
+        </div>
+    </section>
+
+    <!-- Setup Section -->
+    <section id="setup">
+        <h2 class="section-title">⚙️ ตั้งค่าครั้งแรก</h2>
+        <p style="color: var(--gray); margin-bottom: 2rem;">(ทำเพียงครั้งเดียว)</p>
+
+        <div class="content-card">
+            <h3>ตั้งค่า User Name และ Email</h3>
+            <pre><code>git config --global user.name "ชื่อ GitHub"</code></pre>
+            <pre><code>git config --global user.email "อีเมล GitHub"</code></pre>
+            
+            <h4 style="margin-top: 1.5rem; color: var(--primary);">ตรวจสอบการตั้งค่า</h4>
+            <pre><code>git config --global --list</code></pre>
+        </div>
+
+        <div class="content-card">
+            <h3>สร้าง Repository บน GitHub</h3>
+            <ul>
+                <li>กด New Repository</li>
+                <li><strong>ไม่ต้องติ๊ก</strong> Add README, .gitignore, License</li>
+                <li>สร้าง Repository เปล่าๆ</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Commands Section -->
+    <section id="commands">
+        <h2 class="section-title">💻 คำสั่งทั้งหมด</h2>
+
+        <div class="content-card">
+            <h3>🚀 เริ่มโปรเจกต์ใหม่ (ครั้งแรก)</h3>
+            <div class="workflow-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div>เข้าโฟลเดอร์โปรเจกต์</div>
+                </div>
+                <pre><code>cd C:\Users\Administrator\Documents\AI CITY</code></pre>
+                
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div>สร้าง Git Repository</div>
+                </div>
+                <pre><code>git init</code></pre>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div>เพิ่มไฟล์ทั้งหมด</div>
+                </div>
+                <pre><code>git add .</code></pre>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div>สร้าง Commit แรก</div>
+                </div>
+                <pre><code>git commit -m "Initial commit"</code></pre>
+                
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div>เชื่อมต่อกับ GitHub</div>
+                </div>
+                <pre><code>git remote add origin https://github.com/USERNAME/REPOSITORY.git</code></pre>
+                
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <div>เปลี่ยน Branch เป็น main</div>
+                </div>
+                <pre><code>git branch -M main</code></pre>
+                
+                <div class="step">
+                    <div class="step-number">7</div>
+                    <div>Push ขึ้น GitHub ครั้งแรก</div>
+                </div>
+                <pre><code>git push -u origin main</code></pre>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h3>📋 คำสั่งที่ใช้บ่อยที่สุด</h3>
+            <div class="commands-grid">
+                <div class="command-item">
+                    <h4>เช็กสถานะ</h4>
+                    <code>git status</code>
+                </div>
+                <div class="command-item">
+                    <h4>เพิ่มไฟล์ทั้งหมด</h4>
+                    <code>git add .</code>
+                </div>
+                <div class="command-item">
+                    <h4>Commit</h4>
+                    <code>git commit -m "ข้อความ"</code>
+                </div>
+                <div class="command-item">
+                    <h4>Push ขึ้น GitHub</h4>
+                    <code>git push</code>
+                </div>
+                <div class="command-item">
+                    <h4>Pull จาก GitHub</h4>
+                    <code>git pull</code>
+                </div>
+                <div class="command-item">
+                    <h4>ดู Branch</h4>
+                    <code>git branch</code>
+                </div>
+                <div class="command-item">
+                    <h4>ดู Remote</h4>
+                    <code>git remote -v</code>
+                </div>
+                <div class="command-item">
+                    <h4>ดูประวัติ Commit</h4>
+                    <code>git log</code>
+                </div>
+                <div class="command-item">
+                    <h4>ดูประวัติแบบสั้น</h4>
+                    <code>git log --oneline</code>
+                </div>
+                <div class="command-item">
+                    <h4>ดูความต่างของไฟล์</h4>
+                    <code>git diff</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h3>🔄 Clone โปรเจกต์จาก GitHub</h3>
+            <pre><code>git clone https://github.com/USERNAME/REPOSITORY.git</code></pre>
+            <pre><code>cd REPOSITORY</code></pre>
+        </div>
+
+        <div class="content-card">
+            <h3>🔗 เปลี่ยน GitHub Repository</h3>
+            <pre><code>git remote remove origin</code></pre>
+            <pre><code>git remote add origin https://github.com/USERNAME/REPOSITORY.git</code></pre>
+            <pre><code>git remote -v</code></pre>
+        </div>
+
+        <div class="content-card">
+            <h3>🗑️ ลบ Git ออกจากโปรเจกต์</h3>
+            <p><strong>CMD:</strong></p>
+            <pre><code>rmdir /s /q .git</code></pre>
+            <p><strong>PowerShell:</strong></p>
+            <pre><code>Remove-Item -Recurse -Force .git</code></pre>
+            <p>เริ่มใหม่:</p>
+            <pre><code>git init</code></pre>
+        </div>
+    </section>
+
+    <!-- Workflow Section -->
+    <section id="workflow">
+        <h2 class="section-title">🔄 Workflow ใช้งานทุกวัน</h2>
+
+        <div class="content-card">
+            <h3>📅 ลำดับการทำงานจริง</h3>
+            <div class="workflow-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div>เปิด VS Code</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div>ดึงโค้ดล่าสุด</div>
+                </div>
+                <pre><code>git pull</code></pre>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div>เขียนโค้ด</div>
+                </div>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div>ตรวจสอบสถานะ</div>
+                </div>
+                <pre><code>git status</code></pre>
+                
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <div>เพิ่มไฟล์</div>
+                </div>
+                <pre><code>git add .</code></pre>
+                
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <div>Commit</div>
+                </div>
+                <pre><code>git commit -m "แก้ระบบ Login"</code></pre>
+                
+                <div class="step">
+                    <div class="step-number">7</div>
+                    <div>Push ขึ้น GitHub</div>
+                </div>
+                <pre><code>git push</code></pre>
+                
+                <div class="step">
+                    <div class="step-number">8</div>
+                    <div>ปิดเครื่อง 😴</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h3>⚡ จำง่ายที่สุด</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
+                <div>
+                    <h4 style="color: var(--secondary); margin-bottom: 1rem;">🎯 ครั้งแรก</h4>
+                    <pre><code>git init
+git add .
+git commit
+git remote add origin
+git branch -M main
+git push -u origin main</code></pre>
+                </div>
+                <div>
+                    <h4 style="color: var(--primary); margin-bottom: 1rem;">📅 ทุกวัน</h4>
+                    <pre><code>git pull
+# เขียนโค้ด
+git add .
+git commit
+git push</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h3>📖 ศัพท์ที่ควรรู้</h3>
+            <div class="commands-grid">
+                <div class="command-item">
+                    <h4>Git</h4>
+                    <code>บันทึกประวัติ</code>
+                </div>
+                <div class="command-item">
+                    <h4>GitHub</h4>
+                    <code>ที่เก็บบน Cloud</code>
+                </div>
+                <div class="command-item">
+                    <h4>Commit</h4>
+                    <code>บันทึกการเปลี่ยนแปลง</code>
+                </div>
+                <div class="command-item">
+                    <h4>Push</h4>
+                    <code>ส่งขึ้น GitHub</code>
+                </div>
+                <div class="command-item">
+                    <h4>Pull</h4>
+                    <code>ดึงจาก GitHub</code>
+                </div>
+                <div class="command-item">
+                    <h4>Clone</h4>
+                    <code>ดาวน์โหลดโปรเจกต์</code>
+                </div>
+                <div class="command-item">
+                    <h4>Repository</h4>
+                    <code>โปรเจกต์</code>
+                </div>
+                <div class="command-item">
+                    <h4>Branch</h4>
+                    <code>สายการพัฒนา</code>
+                </div>
+                <div class="command-item">
+                    <h4>Merge</h4>
+                    <code>รวมโค้ด</code>
+                </div>
+                <div class="command-item">
+                    <h4>Remote</h4>
+                    <code>ลิงก์ GitHub</code>
+                </div>
+                <div class="command-item">
+                    <h4>Origin</h4>
+                    <code>GitHub หลัก</code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Troubleshooting Section -->
+    <section id="troubleshoot">
+        <h2 class="section-title">🔧 แก้ปัญหา</h2>
+
+        <div class="content-card">
+            <h3>❓ ถ้า Repository มี README อยู่แล้ว</h3>
+            <p>ดึงมาก่อน:</p>
+            <pre><code>git pull origin main --allow-unrelated-histories</code></pre>
+            <p>ถ้าไม่ต้องการ README:</p>
+            <pre><code>git push -u origin main --force</code></pre>
+        </div>
+
+        <div class="content-card">
+            <h3>❓ ถ้า Push ไม่ได้</h3>
+            <pre><code>git pull</code></pre>
+            <pre><code>git push</code></pre>
+        </div>
+
+        <div class="content-card">
+            <h3>❓ ถ้า Merge Conflict</h3>
+            <div class="workflow-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div>ดูไฟล์ที่ Conflict และแก้ไขให้เรียบร้อย</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div>เพิ่มไฟล์</div>
+                </div>
+                <pre><code>git add .</code></pre>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div>Commit</div>
+                </div>
+                <pre><code>git commit -m "Resolve merge conflict"</code></pre>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div>Push</div>
+                </div>
+                <pre><code>git push</code></pre>
+            </div>
+        </div>
+
+        <div class="content-card">
+            <h3>❓ ถ้า Git หาไม่เจอ</h3>
+            <p>เช็กก่อน:</p>
+            <pre><code>git --version</code></pre>
+            <p>ถ้าไม่เจอ:</p>
+            <ul>
+                <li>Restart VS Code</li>
+                <li>หรือ Restart Windows</li>
+            </ul>
+        </div>
+
+        <div class="content-card">
+            <h3>❓ ถ้าเปลี่ยนคอม</h3>
+            <div class="workflow-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div>ติดตั้ง Git</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div>Clone Project</div>
+                </div>
+                <pre><code>git clone URL</code></pre>
+                
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div>เข้าโปรเจกต์</div>
+                </div>
+                <pre><code>cd PROJECT</code></pre>
+                
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <div>ใช้งานได้ทันที! ✨</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>🚀 GIT NLCM - คู่มือ Git & GitHub ฉบับใช้งานจริง</p>
+        <p style="margin-top: 0.5rem; font-size: 0.9rem;">Made with ❤️ for developers</p>
+    </footer>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                
+                const colors = ['#6366f1', '#ec4899', '#8b5cf6'];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                container.appendChild(particle);
+            }
+        }
+
+        // Active nav highlighting
+        function updateActiveNav() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-menu li a');
+
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize
+        window.addEventListener('load', () => {
+            createParticles();
+            updateActiveNav();
+        });
+
+        window.addEventListener('scroll', updateActiveNav);
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            card.style.transition = 'all 0.6s ease-out';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
